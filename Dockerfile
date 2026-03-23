@@ -16,8 +16,8 @@ COPY . .
 # Render uses PORT env variable; default to 10000
 ENV PORT=10000
 
-# Expose the port
-EXPOSE $PORT
+# Expose the default port
+EXPOSE 10000
 
 # Run the FastAPI app with uvicorn
 CMD uvicorn app:app --host 0.0.0.0 --port $PORT

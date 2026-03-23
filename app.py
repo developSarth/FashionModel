@@ -35,13 +35,13 @@ async def predict(request: Request):
     d = model1.predict(df)[0]
     s = model2.predict(df)[0]
 
-    d = encoders["Diagnosis"].inverse_transform([d])[0]
-    s = encoders["Severity"].inverse_transform([s])[0]
+    d = str(encoders["Diagnosis"].inverse_transform([d])[0])
+    s = str(encoders["Severity"].inverse_transform([s])[0])
 
-    prob = model1.predict_proba(df)[0].max()
+    prob = float(model1.predict_proba(df)[0].max())
 
     return {
         "Diagnosis": d,
         "Severity": s,
-        "Confidence": round(float(prob)*100,2)
+        "Confidence": round(prob * 100, 2)
     }
