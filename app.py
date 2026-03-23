@@ -15,7 +15,7 @@ columns = joblib.load("columns.pkl")
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html")
 
 @app.head("/")
 def health_check():
@@ -29,7 +29,7 @@ async def predict(request: Request):
     for col in df.columns:
         if col in encoders:
             le = encoders[col]
-            if df[col][0] in le.classes_:
+            if df[col].iloc[0] in le.classes_:
                 df[col] = le.transform(df[col])
             else:
                 df[col] = 0
