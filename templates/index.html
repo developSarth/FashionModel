@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AI Pneumonia Detector</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        input,
+        select {
+            margin: 5px;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #22c55e;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .box {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🩺 AI Pneumonia Detection</h1>
+
+    <div class="box">
+
+        <select id="Gender">
+            <option>M</option>
+            <option>F</option>
+        </select>
+
+        <input id="Age" type="number" placeholder="Age">
+
+        <select id="Cough">
+            <option>Dry</option>
+            <option>Bloody</option>
+            <option>None</option>
+        </select>
+
+        <select id="Fever">
+            <option>High</option>
+            <option>Low</option>
+            <option>None</option>
+        </select>
+
+        <select id="Shortness_of_breath">
+            <option>Mild</option>
+            <option>Moderate</option>
+            <option>Severe</option>
+            <option>None</option>
+        </select>
+
+        <select id="Chest_pain">
+            <option>Mild</option>
+            <option>Severe</option>
+            <option>None</option>
+        </select>
+
+        <select id="Fatigue">
+            <option>Mild</option>
+            <option>Moderate</option>
+            <option>None</option>
+        </select>
+
+        <select id="Confusion">
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+
+        <input id="Oxygen_saturation" type="number" placeholder="Oxygen">
+
+        <select id="Crackles">
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+
+        <input id="WBC_count" type="number" placeholder="WBC">
+
+        <select id="Sputum_color">
+            <option>Clear</option>
+            <option>Green</option>
+            <option>Yellow</option>
+            <option>None</option>
+        </select>
+
+        <input id="Temperature" type="number" step="0.1" placeholder="Temp">
+
+        <br><br>
+        <button onclick="predict()">Predict</button>
+
+        <h2 id="result"></h2>
+
+    </div>
+
+    <script>
+        async function predict() {
+            let data = {
+                Gender: document.getElementById("Gender").value,
+                Age: parseInt(document.getElementById("Age").value),
+                Cough: document.getElementById("Cough").value,
+                Fever: document.getElementById("Fever").value,
+                Shortness_of_breath: document.getElementById("Shortness_of_breath").value,
+                Chest_pain: document.getElementById("Chest_pain").value,
+                Fatigue: document.getElementById("Fatigue").value,
+                Confusion: document.getElementById("Confusion").value,
+                Oxygen_saturation: parseInt(document.getElementById("Oxygen_saturation").value),
+                Crackles: document.getElementById("Crackles").value,
+                WBC_count: parseInt(document.getElementById("WBC_count").value),
+                Sputum_color: document.getElementById("Sputum_color").value,
+                Temperature: parseFloat(document.getElementById("Temperature").value)
+            };
+
+            let res = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            let result = await res.json();
+
+            document.getElementById("result").innerHTML =
+                `Diagnosis: ${result.Diagnosis} <br>
+         Severity: ${result.Severity} <br>
+         Confidence: ${result.Confidence}%`;
+        }
+    </script>
+
+</body>
+
+</html>
