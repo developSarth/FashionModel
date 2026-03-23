@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 import pandas as pd
 import joblib
 
@@ -16,6 +16,10 @@ columns = joblib.load("columns.pkl")
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.head("/")
+def health_check():
+    return Response(status_code=200)
 
 @app.post("/predict")
 async def predict(request: Request):
